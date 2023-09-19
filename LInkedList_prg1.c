@@ -110,25 +110,49 @@ void display (struct node * p)
    printf("NULL\n\n");
 }
 
+int issorted(struct node *p) 
+{
+    int x = p->data;
+    p=p->next;
+
+    while(p!=NULL) {
+        if(p->data < x) {
+            return 0;
+        }
+        x = p->data;
+        p = p->next;
+    }
+    return 1;
+}
+
 int main() 
-{   int arr[] = {1, 2, 5, 7, 4 };
+{   int arr[] = {1, 2, 5, 8,10 };
 
     create(arr,5);
     display(head);
+  
     insert(head,0,8);
     display(head);
+    
     delete(head,1);
     display(head);
+    
     int end = count(head);
-    printf("\n%d\n\n", end);
+    printf("\n%d\n\n this code is done", end);
+    
     insert(head,count(head)+1,8);
     display(head);
+    
     delete(head,count(head));
     display(head);
+    
     insert(head,4,8);
     display(head);
+    
     delete(head,4);
-    display(head);
+    // display(head);
+
+    printf("%d\n", issorted(head));
 
 
     return 0;

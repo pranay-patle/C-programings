@@ -1,9 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <math.h>
 
-#define NUM_ROWS 10  // Number of rows in the matrices
-#define NUM_COLS 10  // Number of columns in the matrices
+#define NUM_ROWS 3  // Number of rows in the matrices
+#define NUM_COLS 3  // Number of columns in the matrices
 #define FILENAME "random_numbers.txt"
 
 int main() {
@@ -47,6 +48,15 @@ int main() {
 
     fclose(file);
 
+    // Calculate and store the error matrix
+    double errorMatrix[NUM_ROWS][NUM_COLS];
+
+    for (int i = 0; i < NUM_ROWS; i++) {
+        for (int j = 0; j < NUM_COLS; j++) {
+            errorMatrix[i][j] = fabs(doubleMatrix[i][j] - (double)floatMatrix[i][j]);
+        }
+    }
+
     // Print the matrices for verification
     printf("Double Matrix:\n");
     for (int i = 0; i < NUM_ROWS; i++) {
@@ -60,6 +70,14 @@ int main() {
     for (int i = 0; i < NUM_ROWS; i++) {
         for (int j = 0; j < NUM_COLS; j++) {
             printf("%f\t", floatMatrix[i][j]);
+        }
+        printf("\n");
+    }
+
+    printf("\nError Matrix:\n");
+    for (int i = 0; i < NUM_ROWS; i++) {
+        for (int j = 0; j < NUM_COLS; j++) {
+            printf("%.17lf\t", errorMatrix[i][j]); // Use "%.17lf" to print with full double precision
         }
         printf("\n");
     }

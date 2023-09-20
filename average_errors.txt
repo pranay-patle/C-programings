@@ -1,0 +1,4 @@
+Degree 2 - Average Error: 0.00000182280386534
+Degree 3 - Average Error: 0.00000442356659573
+Degree 4 - Average Error: 0.00000364560773067
+Degree 5 - Average Error: 0.00000605607275217

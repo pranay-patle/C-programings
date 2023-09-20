@@ -3,9 +3,10 @@
 #include <time.h>
 #include <math.h>
 
-#define NUM_ROWS 3  // Number of rows in the matrices
-#define NUM_COLS 3  // Number of columns in the matrices
+#define NUM_ROWS 10 // Number of rows in the matrices
+#define NUM_COLS 10  // Number of columns in the matrices
 #define FILENAME "random_numbers.txt"
+#define OUTPUT_FILENAME "average_errors.txt"
 
 int main() {
     // Seed the random number generator with the current time
@@ -81,6 +82,63 @@ int main() {
         }
         printf("\n");
     }
+
+    double errorSum = 0.0;
+
+for (int i = 0; i < NUM_ROWS; i++) {
+    for (int j = 0; j < NUM_COLS; j++) {
+        errorSum += errorMatrix[i][j];
+    }
+}
+
+double averageError = errorSum / (NUM_ROWS * NUM_COLS);
+
+printf("Average Error: %.17lf\n", averageError);
+
+
+   // Create and open the output file for saving average errors
+    FILE* outputFile = fopen(OUTPUT_FILENAME, "w");
+    if (outputFile == NULL) {
+        perror("Error opening output file");
+        return 1;
+    }
+
+    // Loop to perform matrix multiplication with different degrees
+    for (int degree = 2; degree <= 5; degree++) {
+        // Perform matrix multiplication for both double and float matrices
+        double resultDoubleMatrix[NUM_ROWS][NUM_COLS] = {0};
+        float resultFloatMatrix[NUM_ROWS][NUM_COLS] = {0};
+
+        for (int k = 0; k < degree; k++) {
+            for (int i = 0; i < NUM_ROWS; i++) {
+                for (int j = 0; j < NUM_COLS; j++) {
+                    resultDoubleMatrix[i][j] += doubleMatrix[i][j];
+                    resultFloatMatrix[i][j] += floatMatrix[i][j];
+                }
+            }
+        }
+
+        // Calculate and store the error matrix for this degree
+        double errorSum = 0.0;
+
+        for (int i = 0; i < NUM_ROWS; i++) {
+            for (int j = 0; j < NUM_COLS; j++) {
+                errorSum += fabs(resultDoubleMatrix[i][j] - (double)resultFloatMatrix[i][j]);
+            }
+        }
+
+        double averageError = errorSum / (NUM_ROWS * NUM_COLS);
+
+        // Print the degree and average error to the console
+        printf("Degree %d - Average Error: %.17lf\n", degree, averageError);
+
+        // Save the degree and average error to the output file
+        fprintf(outputFile, "Degree %d - Average Error: %.17lf\n", degree, averageError);
+    }
+
+    // Close the output file
+    fclose(outputFile);
+
 
     return 0;
 }

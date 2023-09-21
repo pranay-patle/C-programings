@@ -3,8 +3,8 @@
 #include <time.h>
 #include <math.h>
 
-#define NUM_ROWS 10 // Number of rows in the matrices
-#define NUM_COLS 10  // Number of columns in the matrices
+#define NUM_ROWS 200 // Number of rows in the matrices
+#define NUM_COLS 200 // Number of columns in the matrices
 #define FILENAME "random_numbers.txt"
 #define OUTPUT_FILENAME "average_errors.txt"
 
@@ -58,7 +58,7 @@ int main() {
         }
     }
 
-    // Print the matrices for verification
+    // // Print the matrices for verification
     printf("Double Matrix:\n");
     for (int i = 0; i < NUM_ROWS; i++) {
         for (int j = 0; j < NUM_COLS; j++) {
@@ -104,7 +104,7 @@ printf("Average Error: %.17lf\n", averageError);
     }
 
     // Loop to perform matrix multiplication with different degrees
-    for (int degree = 2; degree <= 5; degree++) {
+    for (int degree = 2; degree <= 10; degree++) {
         // Perform matrix multiplication for both double and float matrices
         double resultDoubleMatrix[NUM_ROWS][NUM_COLS] = {0};
         float resultFloatMatrix[NUM_ROWS][NUM_COLS] = {0};

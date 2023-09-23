@@ -3,27 +3,27 @@
 #include <time.h>
 #include <math.h>
 
-#define NUM_ROWS 10// Number of rows in the matrices
-#define NUM_COLS 10 // Number of columns in the matrices
+#define ROWS 100
+#define COL 100
 #define FILENAME "random_numbers.txt"
 #define OUTPUT_FILENAME "average_errors.txt"
 
 // Function to multiply two matrices
-void matrixDoubleMultiply(double A[][NUM_COLS], double B[][NUM_COLS], double C[][NUM_COLS]) {
-    for (int i = 0; i < NUM_ROWS; i++) {
-        for (int j = 0; j < NUM_COLS; j++) {
+void matrixDoubleMultiply(double A[][COL], double B[][COL], double C[][COL]) {
+    for (int i = 0; i < ROWS; i++) {
+        for (int j = 0; j < COL; j++) {
             C[i][j] = 0.0;
-            for (int k = 0; k < NUM_COLS; k++) {
+            for (int k = 0; k < COL; k++) {
                 C[i][j] += A[i][k] * B[k][j];
             }
         }
     }
 }
-void matrixFloatMultiply(float A[][NUM_COLS], float B[][NUM_COLS], float C[][NUM_COLS]) {
-    for (int i = 0; i < NUM_ROWS; i++) {
-        for (int j = 0; j < NUM_COLS; j++) {
+void matrixFloatMultiply(float A[][COL], float B[][COL], float C[][COL]) {
+    for (int i = 0; i < ROWS; i++) {
+        for (int j = 0; j < COL; j++) {
             C[i][j] = 0.0;
-            for (int k = 0; k < NUM_COLS; k++) {
+            for (int k = 0; k < COL; k++) {
                 C[i][j] += A[i][k] * B[k][j];
             }
         }
@@ -35,11 +35,11 @@ void generateRandNumbers()
     // Generate and save random double numbers to a file
     FILE* file = fopen(FILENAME, "w");
     if (file == NULL) {
-        perror("Error opening file");
+        printf("Error opening file");
         return;
     }
 
-    for (int i = 0; i < NUM_ROWS * NUM_COLS; i++) {
+    for (int i = 0; i < ROWS * COL; i++) {
         double random_double = ((double)rand() / (double)RAND_MAX) * 2.0; // Generate random double between 0 and 100
         fprintf(file, "%.17lf\n", random_double); // Use "%.17lf" to print with full double precision
     }
@@ -49,16 +49,16 @@ void generateRandNumbers()
     
 }
 
-void initializematrix(float floatMatrix[][NUM_COLS],float tempMatrixFloat[][NUM_COLS],double doubleMatrix[][NUM_COLS],double tempMatrixDouble[][NUM_COLS])
+void initializematrix(float floatMatrix[][COL],float tempMatrixFloat[][COL],double doubleMatrix[][COL],double tempMatrixDouble[][COL])
 {
     FILE* file = fopen(FILENAME, "r");
     if (file == NULL) {
-        perror("Error opening file");
+        printf("Error opening file");
         return;
     }
 
-    for (int i = 0; i < NUM_ROWS; i++) {
-        for (int j = 0; j < NUM_COLS; j++) {
+    for (int i = 0; i < ROWS; i++) {
+        for (int j = 0; j < COL; j++) {
             if (fscanf(file, "%lf", &doubleMatrix[i][j]) != 1) {
                 fprintf(stderr, "Error reading from file\n");
                 fclose(file);
@@ -74,27 +74,27 @@ void initializematrix(float floatMatrix[][NUM_COLS],float tempMatrixFloat[][NUM_
     return;
 }
 
-void printMatrices(float floatMatrix[][NUM_COLS],double doubleMatrix[][NUM_COLS],double errorMatrix[][NUM_COLS])
+void printMatrices(float floatMatrix[][COL],double doubleMatrix[][COL],double errorMatrix[][COL])
 {
     printf("Double Matrix:\n");
-    for (int i = 0; i < NUM_ROWS; i++) {
-        for (int j = 0; j < NUM_COLS; j++) {
+    for (int i = 0; i < ROWS; i++) {
+        for (int j = 0; j < COL; j++) {
             printf("%.17lf\t", doubleMatrix[i][j]); // "%.17lf" to print double precision
         }
         printf("\n");
     }
 
     printf("\nFloat Matrix:\n");
-    for (int i = 0; i < NUM_ROWS; i++) {
-        for (int j = 0; j < NUM_COLS; j++) {
+    for (int i = 0; i < ROWS; i++) {
+        for (int j = 0; j < COL; j++) {
             printf("%f\t", floatMatrix[i][j]);
         }
         printf("\n");
     }
 
     printf("\nError Matrix:\n");
-    for (int i = 0; i < NUM_ROWS; i++) {
-        for (int j = 0; j < NUM_COLS; j++) {
+    for (int i = 0; i < ROWS; i++) {
+        for (int j = 0; j < COL; j++) {
             printf("%.17lf\t", errorMatrix[i][j]); // Use "%.17lf" to print with full double precision
         }
         printf("\n");
@@ -102,13 +102,13 @@ void printMatrices(float floatMatrix[][NUM_COLS],double doubleMatrix[][NUM_COLS]
 
     double errorSum = 0.0;
 
-    for (int i = 0; i < NUM_ROWS; i++) {
-        for (int j = 0; j < NUM_COLS; j++) {
+    for (int i = 0; i < ROWS; i++) {
+        for (int j = 0; j < COL; j++) {
             errorSum += errorMatrix[i][j];
         }
     }
 
-    double averageError = errorSum / (NUM_ROWS * NUM_COLS);
+    double averageError = errorSum / (ROWS * COL);
 
     printf("Average Error: %.17lf\n", averageError);
 }
@@ -119,15 +119,15 @@ int main() {
     
     generateRandNumbers();
 
-    double doubleMatrix[NUM_ROWS][NUM_COLS],tempMatrixDouble[NUM_ROWS][NUM_COLS];
-    float floatMatrix[NUM_ROWS][NUM_COLS],tempMatrixFloat[NUM_ROWS][NUM_COLS];
+    double doubleMatrix[ROWS][COL],tempMatrixDouble[ROWS][COL];
+    float floatMatrix[ROWS][COL],tempMatrixFloat[ROWS][COL];
     initializematrix(floatMatrix,tempMatrixFloat,doubleMatrix,tempMatrixDouble);
         
     // Calculate and store the error matrix
-    double errorMatrix[NUM_ROWS][NUM_COLS];
+    double errorMatrix[ROWS][COL];
 
-    for (int i = 0; i < NUM_ROWS; i++) {
-        for (int j = 0; j < NUM_COLS; j++) {
+    for (int i = 0; i < ROWS; i++) {
+        for (int j = 0; j < COL; j++) {
             errorMatrix[i][j] = fabs(doubleMatrix[i][j] - (double)floatMatrix[i][j]);
         }
     }
@@ -138,23 +138,23 @@ int main() {
     // Create and open the output file for saving average errors
     FILE* outputFile = fopen(OUTPUT_FILENAME, "w");
     if (outputFile == NULL) {
-        perror("Error opening output file");
+        printf("Error opening output file");
         return 1;
     }
     double avg_error[15];
     // Perform matrix multiplication for both double and float matrices
-    double resultDoubleMatrix[NUM_ROWS][NUM_COLS] = {0};
-    float resultFloatMatrix[NUM_ROWS][NUM_COLS] = {0};
+    double resultDoubleMatrix[ROWS][COL] = {0};
+    float resultFloatMatrix[ROWS][COL] = {0};
 
     //degree of multiplication
-    for (int degree = 2; degree <= 10; degree++) {
+    for (int degree = 2; degree <= 8; degree++) {
         
         matrixDoubleMultiply(tempMatrixDouble, doubleMatrix, resultDoubleMatrix);
         matrixFloatMultiply(tempMatrixFloat, floatMatrix, resultFloatMatrix);
 
         // Update temp matrices for the next iteration
-        for (int i = 0; i < NUM_ROWS; i++) {
-            for (int j = 0; j < NUM_COLS; j++) {
+        for (int i = 0; i < ROWS; i++) {
+            for (int j = 0; j < COL; j++) {
                 tempMatrixDouble[i][j] = resultDoubleMatrix[i][j];
                 tempMatrixFloat[i][j] = resultFloatMatrix[i][j];
             }
@@ -163,14 +163,14 @@ int main() {
         // Calculate and store the error matrix for this degree
         double errorSum = 0.0;
 
-        for (int i = 0; i < NUM_ROWS; i++) {
-            for (int j = 0; j < NUM_COLS; j++) {
-                errorSum += (resultFloatMatrix[i][j] - resultDoubleMatrix[i][j]);
+        for (int i = 0; i < ROWS; i++) {
+            for (int j = 0; j < COL; j++) {
+                errorSum += fabs(resultFloatMatrix[i][j] - resultDoubleMatrix[i][j]);
                 
             }
         }
         
-        double averageError = errorSum / (NUM_ROWS * NUM_COLS);
+        double averageError = errorSum / (ROWS * COL);
 
         printf("Degree %d - Average Error: %.17lf\n", degree, averageError);
 
@@ -182,7 +182,7 @@ int main() {
     // Using gnuplot to plot the data
     FILE *gnuplotPipe = popen("gnuplot -persist", "w");
     if (gnuplotPipe == NULL) {
-        perror("Error opening gnuplot pipe");
+        printf("Error opening gnuplot pipe");
         return 1;
     }
     // Ploting the data
